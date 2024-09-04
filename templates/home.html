@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Document Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Legal Document Generator</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        
+        <div>
+            {{ form.agreement_type.label }}<br>
+            {{ form.agreement_type() }}
+        </div>
+        
+        <div>
+            {{ form.party_1.label }}<br>
+            {{ form.party_1(size=50) }}
+        </div>
+        
+        <div>
+            {{ form.party_2.label }}<br>
+            {{ form.party_2(size=50) }}
+        </div>
+        
+        <div>
+            {{ form.specific_terms.label }}<br>
+            {{ form.specific_terms(size=50) }}
+        </div>
+        
+        <div>
+            {{ form.submit() }}
+        </div>
+    </form>
+</body>
+</html>
