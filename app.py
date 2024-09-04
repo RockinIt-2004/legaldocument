@@ -4,9 +4,8 @@ from docx import Document
 from forms import LegalDocumentForm
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your_secret_key'  # Replace with your own secret key
+app.config['SECRET_KEY'] = 'your_secret_key'  
 
-# Predefined templates for each agreement type
 agreement_templates = {
     'partnership': 'This Partnership Agreement is made between {party_1} and {party_2}. The partners agree to share profits and losses equally. Specific Terms: {specific_terms}.',
     'lease': 'This Lease Agreement is made between {party_1} (Landlord) and {party_2} (Tenant). The landlord and the tenant agree on the rental rate and the duration of the lease. Specific Terms: {specific_terms}.',
@@ -22,27 +21,22 @@ agreement_templates = {
 def home():
     form = LegalDocumentForm()
     if form.validate_on_submit():
-        # Extract data from the form
         agreement_type = form.agreement_type.data
         party_1 = form.party_1.data
         party_2 = form.party_2.data
         specific_terms = form.specific_terms.data
-        
-        # Get the template and format it with the user input
+
         agreement_text = agreement_templates[agreement_type].format(
             party_1=party_1, party_2=party_2, specific_terms=specific_terms)
         
-        # Create a new Word document
         doc = Document()
         doc.add_heading('Legal Agreement', 0)
         doc.add_paragraph(agreement_text)
         
-        # Save the document to a BytesIO object
         buffer = BytesIO()
         doc.save(buffer)
         buffer.seek(0)
-        
-        # Send the document as a download
+
         return send_file(buffer, as_attachment=True, download_name='legal_agreement.docx')
     
     return render_template('home.html', form=form)
